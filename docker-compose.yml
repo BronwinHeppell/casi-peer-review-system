@@ -1,9 +1,9 @@
 services:
     laravel.test:
         build:
-        args:
-            user: user
-            uid: 1000
+            args:
+                user: user
+                uid: 1000
             context: ./
             dockerfile: Dockerfile
         image: ${APP_NAME}
