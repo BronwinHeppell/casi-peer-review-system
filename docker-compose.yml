@@ -19,7 +19,7 @@ services:
     # PHP-FPM Service
     php:
         build:
-        context: ./dockerfiles
+        context: .
         dockerfile: php.dockerfile
         ports:
             - "9000:9000"
@@ -58,7 +58,7 @@ services:
 
     composer:
         build:
-        context: ./dockerfiles
+        context: .
         dockerfile: php.dockerfile
         volumes:
             - ./src:/var/www/html
@@ -83,7 +83,7 @@ services:
 
     artisan:
         build:
-        context: ./dockerfiles
+        context: .
         dockerfile: php.dockerfile
         volumes:
             - ./src:/var/www/html:delegated
