@@ -1,27 +1,44 @@
+version: "3.8"
+
 services:
-    laravel:
+    # Nginx Service
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "${APP_PORT:-80}:80" # Expose port 80 for the app
+        volumes:
+            - .:/var/www/html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - app_network
+        depends_on:
+            - php
+        restart: always
+
+    # PHP-FPM Service
+    php:
         build:
             context: .
             dockerfile: Dockerfile
             args:
                 WWWGROUP: "${WWWGROUP}"
-        image: "sail-8.4/app"
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        ports:
-            - "80:80"
+        container_name: php-fpm
+        volumes:
+            - .:/var/www/html
         environment:
             WWWUSER: "${WWWUSER}"
             LARAVEL_SAIL: 1
-        volumes:
-            - ".:/var/www/html"
         networks:
-            - sail
-        depends_on:
-            - pgsql
+            - app_network
+        restart: always
+
+    # PostgreSQL Service
     pgsql:
         image: "postgres:17"
-        restart: always
+        container_name: pgsql
+        ports:
+            - "${FORWARD_DB_PORT:-5432}:5432"
         environment:
             PGPASSWORD: "${DB_PASSWORD:-secret}"
             POSTGRES_DB: "${DB_DATABASE}"
@@ -30,7 +47,7 @@ services:
         volumes:
             - "sail-pgsql:/var/lib/postgresql/data"
         networks:
-            - sail
+            - app_network
         healthcheck:
             test:
                 - CMD
@@ -42,10 +59,12 @@ services:
                 - "${DB_USERNAME}"
             retries: 3
             timeout: 5s
+        restart: always
 
 networks:
-    sail:
+    app_network:
         driver: bridge
+
 volumes:
     sail-pgsql:
         driver: local

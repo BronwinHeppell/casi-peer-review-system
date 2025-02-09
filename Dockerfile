@@ -30,19 +30,8 @@ RUN chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html
 # Install application dependencies using Composer
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
-# Wait for the PostgreSQL database to be ready and run Laravel tasks
-RUN apt-get install -y postgresql-client \
-    && until pg_isready -h pgsql -U "$DB_USERNAME"; do \
-    echo "Waiting for PostgreSQL to be ready..."; \
-    sleep 2; \
-    done && \
-    php artisan migrate --force && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
-
-# Expose the application port (80 by default)
-EXPOSE 80
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
 
 # Start PHP-FPM
 CMD ["php-fpm"]
