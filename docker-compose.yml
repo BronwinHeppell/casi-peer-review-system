@@ -1,9 +1,6 @@
 services:
     laravel.test:
         build:
-            args:
-                user: user
-                uid: 1000
             context: ./
             dockerfile: Dockerfile
         image: casi_peer_review_image
