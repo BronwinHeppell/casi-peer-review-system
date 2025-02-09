@@ -1,0 +1,48 @@
+# Laravel
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/.env
+/.env.*.backup
+/.idea
+/.vscode
+/_ide_helper.php
+/_ide_helper_models.php
+/.phpunit.result.cache
+/.phpstorm.meta.php
+/public/hot
+/public/mix-manifest.json
+/public/css/app.css
+/public/js/app.js
+/public/js/*.map
+/public/css/*.map
+
+# Docker & Sail
+docker-compose.override.yml
+.env.sail
+
+# Composer
+composer.lock
+
+# NPM/Yarn/Pnpm
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+pnpm-debug.log
+
+# Logs and caches
+/storage/logs
+/storage/framework/cache
+/storage/framework/views
+/storage/framework/sessions
+/bootstrap/cache
+
+# Laravel Test Results
+.phpunit.result.cache
+
+# IDE and OS files
+*.log
+*.sqlite
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+@import 'bulma/css/bulma.css';
+
+:root {
+    --bulma-primary-h: 355deg;
+    --bulma-primary-s: 80%;
+    --bulma-primary-l: 44%;
+    --bulma-link-h: 355deg;
+    --bulma-link-s: 80%;
+}
+
+html, body {
+    height: 100vh;
+}
+
+.full-height {
+    height: 100vh;
+}

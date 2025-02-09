@@ -1,0 +1,1 @@
+import{_ as s}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{o,f as r,b as t,r as c}from"./app-D2Fj5F7q.js";const a={},n={class:"full-height columns is-flex is-vcentered is-centered has-background-dark bg-red-600 red"},d={class:"column is-half box p-4"};function l(e,i){return o(),r("div",n,[t("div",d,[c(e.$slots,"default")])])}const u=s(a,[["render",l]]);export{u as G};
