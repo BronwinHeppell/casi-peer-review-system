@@ -1,8 +1,8 @@
 services:
     laravel.test:
         build:
-            context: "./vendor/laravel/sail/runtimes/8.4"
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: Dockerfile # Point to your Dockerfile
             args:
                 WWWGROUP: "${WWWGROUP}"
         image: "sail-8.4/app"
@@ -19,29 +19,30 @@ services:
             - sail
         depends_on:
             - pgsql
-    pgsql:
-        image: "postgres:17"
-        restart: always
-        environment:
-            PGPASSWORD: "${DB_PASSWORD:-secret}"
-            POSTGRES_DB: "${DB_DATABASE}"
-            POSTGRES_USER: "${DB_USERNAME}"
-            POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
-        volumes:
-            - "sail-pgsql:/var/lib/postgresql/data"
-        networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - pg_isready
-                - "-q"
-                - "-d"
-                - "${DB_DATABASE}"
-                - "-U"
-                - "${DB_USERNAME}"
-            retries: 3
-            timeout: 5s
+
+        pgsql:
+            image: "postgres:17"
+            restart: always
+            environment:
+                PGPASSWORD: "${DB_PASSWORD:-secret}"
+                POSTGRES_DB: "${DB_DATABASE}"
+                POSTGRES_USER: "${DB_USERNAME}"
+                POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
+            volumes:
+                - "sail-pgsql:/var/lib/postgresql/data"
+            networks:
+                - sail
+            healthcheck:
+                test:
+                    - CMD
+                    - pg_isready
+                    - "-q"
+                    - "-d"
+                    - "${DB_DATABASE}"
+                    - "-U"
+                    - "${DB_USERNAME}"
+                retries: 3
+                timeout: 5s
 
 networks:
     sail:
