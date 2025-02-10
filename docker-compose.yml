@@ -48,29 +48,21 @@ services:
             - ./nginx:/etc/nginx/conf.d\
         networks:
             - casi_peer_review
-    node:
-        platform: linux/arm64/v8 #this line is optional if you are using Mac Silicon chip (M1/M2/M3)
-        build:
-            context: .
-            dockerfile: Dockerfile
-        image: casi_peer_review-node
-        container_name: casi_peer_review-node
-        ports:
-            - "3000:3000"
-        restart: unless-stopped
-        working_dir: /var/www
+    npm:
+        image: node:20
+        container_name: casi_peer_review-npm
+        user: "1000:1000"
         volumes:
-            - ./:/var/www
-            - /var/www/node_modules
-        networks:
-            - casi_peer_review
+            - ./src:/var/www/
+        working_dir: /var/www/
+        entrypoint: ["npm"]
     php:
         build:
             context: .
             dockerfile: Dockerfile
         container_name: casi_peer_review-php
         volumes:
-            - ./src:/var/www/html
+            - ./src:/var/www/
         ports:
             - "9000:9000"
         networks:
@@ -92,11 +84,11 @@ services:
             dockerfile: Dockerfile
         container_name: casi_peer_review-artisan
         volumes:
-            - ./src:/var/www/html
+            - ./src:/var/www/
         depends_on:
             - pgsql
-        working_dir: /var/www/html
-        entrypoint: ["php", "/var/www/html/artisan"]
+        working_dir: /var/www/
+        entrypoint: ["php", "/var/www/artisan"]
         networks:
             - casi_peer_review
 networks:
