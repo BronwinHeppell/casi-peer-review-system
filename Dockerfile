@@ -24,7 +24,15 @@ RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install
+
+# Set working directory
+WORKDIR /var/www
+
+# Copy composer files (composer.json and composer.lock) to the container
+COPY composer.json composer.lock /var/www/
+
+# Run composer install to install PHP dependencies
+RUN composer install --no-dev --optimize-autoloade
 
 # Install Node.js and npm
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
