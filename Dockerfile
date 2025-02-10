@@ -28,19 +28,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy composer files (composer.json and composer.lock) to the container
-COPY composer.json composer.lock /var/www/
-
-# Install Node.js and npm
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs
-
-# Install frontend dependencies 
-WORKDIR /var/www
-RUN npm install
-RUN npm run build
-
-# Set working directory
-WORKDIR /var/www
-
 USER $user
