@@ -27,17 +27,6 @@ services:
             - pgsql
         networks:
             - casi_peer_review
-    php:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: casi_peer_review-php
-        volumes:
-            - ./:/var/www/
-        ports:
-            - "9001:9000"
-        networks:
-            - casi_peer_review
     pgsql:
         image: "postgres:17"
         ports:
