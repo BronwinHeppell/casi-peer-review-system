@@ -64,6 +64,17 @@ services:
             - /var/www/node_modules
         networks:
             - casi_peer_review
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: casi_peer_review-php
+        volumes:
+            - ./src:/var/www/html
+        ports:
+            - "9000:9000"
+        networks:
+            - casi_peer_review
     composer:
         image: composer:latest
         user: "1000:1000"
