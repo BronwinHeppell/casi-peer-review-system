@@ -64,6 +64,30 @@ services:
             - /var/www/node_modules
         networks:
             - casi_peer_review
+    composer:
+        image: composer:latest
+        user: "1000:1000"
+        container_name: casi_peer_review-composer
+        volumes:
+            - ./src:/var/www/
+        working_dir: /var/www/
+        depends_on:
+            - php
+        networks:
+            - casi_peer_review
+    artisan:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: casi_peer_review-artisan
+        volumes:
+            - ./src:/var/www/html
+        depends_on:
+            - pgsql
+        working_dir: /var/www/html
+        entrypoint: ["php", "/var/www/html/artisan"]
+        networks:
+            - casi_peer_review
 networks:
     casi_peer_review:
         driver: bridge
