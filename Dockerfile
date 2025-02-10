@@ -26,12 +26,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN mkdir -p /home/ubuntu/.composer && \
     chown -R ubuntu:ubuntu /home/ubuntu
 
-# Install PHP extensions and other setup steps
-# Ensure that the user is able to run commands as the correct user
+# Install PHP extensions
 RUN docker-php-ext-install pdo_pgsql pgsql
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql pgsql nodejs npm
+# Install Node.js 18
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
 # Set working directory
 WORKDIR /var/www
