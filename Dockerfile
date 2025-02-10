@@ -20,10 +20,20 @@ unzip
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-configure pgsql && \
-    docker-php-ext-install pdo_pgsql pgsql
+RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer install
+
+# Install Node.js and npm
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs
+
+# Install frontend dependencies 
+WORKDIR /var/www
+RUN npm install
+RUN npm run build
 
 # Set working directory
 WORKDIR /var/www
