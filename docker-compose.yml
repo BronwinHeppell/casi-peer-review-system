@@ -48,6 +48,22 @@ services:
             - ./nginx:/etc/nginx/conf.d\
         networks:
             - casi_peer_review
+    node:
+        platform: linux/arm64/v8 #this line is optional if you are using Mac Silicon chip (M1/M2/M3)
+        build:
+            context: .
+            dockerfile: Dockerfile.node
+        image: casi_peer_review-node
+        container_name: casi_peer_review-node
+        ports:
+            - "3000:3000"
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - /var/www/node_modules
+        networks:
+            - casi_peer_review
 networks:
     casi_peer_review:
         driver: bridge
