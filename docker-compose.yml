@@ -53,6 +53,7 @@ services:
 networks:
     casi_peer_review:
         driver: bridge
+        external: true
 volumes:
     casi_peer_review-pgsql:
         driver: local
