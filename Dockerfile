@@ -1,12 +1,6 @@
 # Use the official PHP 8.4 image as the base
 FROM php:8.4-fpm
 
-# Use the existing 'ubuntu' user instead of creating a new one
-USER ubuntu
-
-# Ensure the ubuntu user is added to the correct groups (www-data and root)
-RUN usermod -aG www-data,root ubuntu
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
 git \
@@ -17,6 +11,10 @@ libonig-dev \
 libxml2-dev \
 zip \
 unzip
+
+# Create a user and add to necessary groups
+RUN useradd -ms /bin/bash ubuntu && \
+    usermod -aG www-data,root ubuntu
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

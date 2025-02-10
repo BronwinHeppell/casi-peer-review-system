@@ -23,7 +23,6 @@ services:
             - ./:/var/www/
             - ./nginx:/etc/nginx/conf.d\
         depends_on:
-            - php
             - pgsql
         networks:
             - casi_peer_review
