@@ -52,7 +52,7 @@ services:
         platform: linux/arm64/v8 #this line is optional if you are using Mac Silicon chip (M1/M2/M3)
         build:
             context: .
-            dockerfile: Dockerfile.node
+            dockerfile: Dockerfile
         image: casi_peer_review-node
         container_name: casi_peer_review-node
         ports:
