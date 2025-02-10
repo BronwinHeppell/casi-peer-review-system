@@ -13,6 +13,20 @@ services:
             - casi_peer_review
         depends_on:
             - pgsql
+    nginx:
+        image: nginx:alpine
+        container_name: casi_peer_review-nginx
+        restart: unless-stopped
+        ports:
+            - ${APP_PORT:-8080}:80
+        volumes:
+            - ./:/var/www/html
+            - ./nginx:/etc/nginx/conf.d\
+        depends_on:
+            - php
+            - pgsql
+        networks:
+            - casi_peer_review
     pgsql:
         image: "postgres:17"
         ports:
@@ -37,58 +51,15 @@ services:
                 - "${DB_USERNAME}"
             retries: 3
             timeout: 5s
-    nginx:
-        image: nginx:alpine
-        container_name: casi_peer_review-nginx
-        restart: unless-stopped
-        ports:
-            - ${APP_PORT:-8080}:80
-        volumes:
-            - ./:/var/www
-            - ./nginx:/etc/nginx/conf.d\
-        networks:
-            - casi_peer_review
-    npm:
-        image: node:20
-        container_name: casi_peer_review-npm
-        user: "1000:1000"
-        volumes:
-            - ./src:/var/www/
-        working_dir: /var/www/
-        entrypoint: ["npm"]
     php:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: casi_peer_review-php
+        container_name: ${APP_NAME}_php
         volumes:
-            - ./src:/var/www/
+            - ./:/var/www/html
         ports:
-            - "9000:9000"
-        networks:
-            - casi_peer_review
-    composer:
-        image: composer:latest
-        user: "1000:1000"
-        container_name: casi_peer_review-composer
-        volumes:
-            - ./src:/var/www/
-        working_dir: /var/www/
-        depends_on:
-            - php
-        networks:
-            - casi_peer_review
-    artisan:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: casi_peer_review-artisan
-        volumes:
-            - ./src:/var/www/
-        depends_on:
-            - pgsql
-        working_dir: /var/www/
-        entrypoint: ["php", "/var/www/artisan"]
+            - "9001:9000"
         networks:
             - casi_peer_review
 networks:

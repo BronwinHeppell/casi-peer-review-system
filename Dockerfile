@@ -1,10 +1,6 @@
 # Use the official PHP 8.4 image as the base
 FROM php:8.4-fpm
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
 git \
@@ -19,13 +15,13 @@ unzip
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
-
 # Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install PHP extensions
+RUN set -ex \
+    	&& apk --no-cache add postgresql-dev nodejs yarn npm\
+    	&& docker-php-ext-install pdo pdo_pgsql
 
 # Set working directory
 WORKDIR /var/www
-
-USER $user
