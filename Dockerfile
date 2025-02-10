@@ -32,7 +32,7 @@ WORKDIR /var/www
 COPY composer.json composer.lock /var/www/
 
 # Run composer install to install PHP dependencies
-RUN composer install --no-dev --optimize-autoloade
+RUN composer install --no-dev --optimize-autoloader
 
 # Install Node.js and npm
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
