@@ -19,9 +19,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install PHP extensions
-RUN set -ex \
-    	&& apk --no-cache add postgresql-dev nodejs yarn npm\
-    	&& docker-php-ext-install pdo pdo_pgsql
+RUN set -ex \ && apk --no-cache add postgresql-dev nodejs yarn npm\ && docker-php-ext-install pdo pdo_pgsql
 
 # Set working directory
 WORKDIR /var/www
