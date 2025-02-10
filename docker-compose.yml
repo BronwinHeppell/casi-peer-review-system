@@ -20,11 +20,22 @@ services:
         ports:
             - ${APP_PORT:-8080}:80
         volumes:
-            - ./:/var/www/html
+            - ./:/var/www/
             - ./nginx:/etc/nginx/conf.d\
         depends_on:
             - php
             - pgsql
+        networks:
+            - casi_peer_review
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: casi_peer_review-php
+        volumes:
+            - ./:/var/www/
+        ports:
+            - "9001:9000"
         networks:
             - casi_peer_review
     pgsql:
@@ -51,17 +62,6 @@ services:
                 - "${DB_USERNAME}"
             retries: 3
             timeout: 5s
-    php:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: ${APP_NAME}_php
-        volumes:
-            - ./:/var/www/html
-        ports:
-            - "9001:9000"
-        networks:
-            - casi_peer_review
 networks:
     casi_peer_review:
         driver: bridge
