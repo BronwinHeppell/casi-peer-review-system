@@ -31,9 +31,6 @@ WORKDIR /var/www
 # Copy composer files (composer.json and composer.lock) to the container
 COPY composer.json composer.lock /var/www/
 
-# Run composer install to install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
-
 # Install Node.js and npm
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
     apt-get install -y nodejs
