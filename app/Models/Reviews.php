@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -15,8 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $review_cycle_id
  * @property int|null $reviewer_id
  * @property int|null $reviewee_id
+ * @property bool $is_reviewed
  * @property float|null $average_rating
- * @property-read \App\Models\ReviewCycle $reviewCycles
+ * @property-read \App\Models\ReviewCycle $reviewCycle
  * @property-read \App\Models\User|null $reviewee
  * @property-read \App\Models\User|null $reviewer
  * @method static \Database\Factories\ReviewsFactory factory($count = null, $state = [])
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereAverageRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereIsReviewed($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereReviewCycleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereRevieweeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reviews whereReviewerId($value)

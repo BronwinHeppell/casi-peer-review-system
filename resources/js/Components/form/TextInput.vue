@@ -1,5 +1,12 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { onMounted, ref } from "vue";
+
+const props = defineProps({
+    icon: {
+        type: Object,
+    },
+});
 
 const model = defineModel({
     type: String,
@@ -9,7 +16,7 @@ const model = defineModel({
 const input = ref(null);
 
 onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
+    if (input.value.hasAttribute("autofocus")) {
         input.value.focus();
     }
 });
@@ -18,9 +25,16 @@ defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
-    <input
-        class="input has-shadow has-text-grey-darker"
-        v-model="model"
-        ref="input"
-    />
+    <div class="field">
+        <p class="control" :class="{ 'has-icons-left': icon }">
+            <input
+                class="input has-shadow has-text-grey-darker"
+                v-model="model"
+                ref="input"
+            />
+            <span class="icon is-small is-left" v-if="icon">
+                <FontAwesomeIcon :icon="icon" />
+            </span>
+        </p>
+    </div>
 </template>

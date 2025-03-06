@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $review_cycle_id
  * @property int $category_id
  * @property-read \App\Models\Category $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionResponse> $questionResponses
+ * @property-read int|null $question_responses_count
  * @method static \Database\Factories\QuestionsFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Questions newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Questions newQuery()

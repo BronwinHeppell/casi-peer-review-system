@@ -15,35 +15,57 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use Illuminate\Support\Facades\Log;
 class NewPasswordController extends Controller
 {
     /**
      * Display the password reset view.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        $user = User::where('id', auth()->id())->firstOrFail();
-
         return Inertia::render('Auth/ResetPassword', [
-            'email' => $user->email,
+            'email' => $request->email,
+            'token' => $request->token,
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
+       $validated =  $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = User::findOrFail(auth()->id());
+        // Here we will attempt to reset the user's password. If it is successful we
+        // will update the password on an actual user model and persist it to the
+        // database. Otherwise we will parse the error and return the response.
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => $request->password,
+                    'remember_token' => Str::random(60),
+                ])->save();
 
-        $success = $user->update([
-            'password' => $validated['password'],
-            'password_reset' => false
+                event(new PasswordReset($user));
+            }
+        );
+
+        // If the password was successfully reset, we will redirect the user back to
+        // the application's home authenticated view. If there is an error we can
+        // redirect them back to where they came from with their error message.
+        if ($status == Password::PASSWORD_RESET) {
+            flash()->options([
+                'timeout' => 3000, // 3 seconds
+                'position' => 'bottom-right',
+            ])->success('Password reset successfully.');
+
+            return redirect()->route('login');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [trans($status)],
         ]);
-        \Illuminate\Log\log($success);
-
-        return redirect()->route($success ? 'home': 'password.reset');
     }
 }
